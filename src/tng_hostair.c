@@ -56,14 +56,15 @@ VAStatus tng_air_buf_create(context_ENC_p ctx)
 
 static void tng_air_buf_clear(context_ENC_p ctx)
 {
-#if 0
+#ifdef MIXVBP_KK_BLOBS
     IMG_UINT32 ui32MbNum = (ctx->ui16PictureHeight * ctx->ui16Width) >> 8;
     drv_debug_msg(VIDEO_DEBUG_ERROR,"%s: ui32MbNum = %d, ctx->sAirInfo.pi8AIR_Table = 0x%08x\n", __FUNCTION__, ui32MbNum, ctx->sAirInfo.pi8AIR_Table);
     memset(ctx->sAirInfo.pi8AIR_Table, 0, ui32MbNum);    
     drv_debug_msg(VIDEO_DEBUG_ERROR,"%s: ui32MbNum = %d, ctx->sAirInfo.pi8AIR_Table = 0x%08x\n", __FUNCTION__, ui32MbNum, ctx->sAirInfo.pi8AIR_Table);
-#endif
+#else
     tng_cmdbuf_insert_command(ctx->obj_context, ctx->ui32StreamID,
         MTX_CMDID_SW_AIR_BUF_CLEAR, 0, 0, 0);
+#endif
     return ;
 }
 
@@ -531,16 +532,17 @@ static void tng__update_air_send(context_ENC_p ctx, IMG_UINT8 ui8SlotNum)
     IMG_UINT8 *pInpCtrlBuf = NULL;
     drv_debug_msg(VIDEO_DEBUG_GENERAL,"%s: start\n", __FUNCTION__);
     // Get pointer to MB Control buffer for current source buffer (if input control is enabled, otherwise buffer is NULL)
-#if 0
+#ifdef MIXVBP_KK_BLOBS
     tng__map_inp_ctrl_buf(ctx, ui8SlotNum, &pInpCtrlBuf);
     if(pInpCtrlBuf!= IMG_NULL) {
         tng__send_air_inp_ctrl_buf(ctx, (IMG_INT8 *)pInpCtrlBuf);
     }
     tng__unmap_inp_ctrl_buf(ctx, ui8SlotNum, &pInpCtrlBuf);
     drv_debug_msg(VIDEO_DEBUG_GENERAL,"%s: end\n", __FUNCTION__);
-#endif
+#else
     tng_cmdbuf_insert_command(ctx->obj_context, ctx->ui32StreamID,
         MTX_CMDID_SW_UPDATE_AIR_SEND, ui8SlotNum, 0, 0);
+#endif
     return ;
 }
 
@@ -828,7 +830,7 @@ static void tng_update_air_calc(context_ENC_p ctx, IMG_UINT8 ui8SlotNum)
 {
     IMG_UINT8  *pFirstPassOutBuf = NULL;
     IMG_UINT8  *pBestMBDecisionCtrlBuf = NULL;
-#if 0
+#ifdef MIXVBP_KK_BLOBS
     // Get pointer to MB Control buffer for current source buffer (if input control is enabled, otherwise buffer is NULL)
     tng__map_first_pass_out_buf(ctx, ui8SlotNum, &pFirstPassOutBuf);
     tng__map_best_mb_decision_out_buf(ctx, ui8SlotNum, &pBestMBDecisionCtrlBuf);
@@ -838,9 +840,10 @@ static void tng_update_air_calc(context_ENC_p ctx, IMG_UINT8 ui8SlotNum)
 
     tng__unmap_first_pass_out_buf(ctx, ui8SlotNum, &pFirstPassOutBuf);
     tng__unmap_best_mb_decision_out_buf(ctx, ui8SlotNum, &pBestMBDecisionCtrlBuf);
-#endif
+#else
     tng_cmdbuf_insert_command(ctx->obj_context, ctx->ui32StreamID,
         MTX_CMDID_SW_UPDATE_AIR_CALC, ui8SlotNum, 0, 0);
+#endif
 }
 
 /***********************************************************************************

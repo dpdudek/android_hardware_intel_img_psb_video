@@ -222,7 +222,7 @@ VAStatus psb_buffer_create_from_ub(psb_driver_data_p driver_data,
     buf->type = type;
     buf->driver_data = driver_data; /* only for RAR buffers */
     buf->user_ptr = vaddr;
-#ifndef ASUS_ZENFONE2_LP_BLOBS
+#if !defined(ASUS_ZENFONE2_LP_BLOBS) && !defined(MIXVBP_KK_BLOBS)
     buf->fd = fd;
 #endif
 
