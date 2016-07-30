@@ -474,8 +474,10 @@ void tng_cmdbuf_insert_command(
         *(cmdbuf->cmd_idx)++ = wsbmKBufHandle(wsbmKBuf(data_addr->drm_buf));
 
         *(cmdbuf->cmd_idx)++ = wsbmKBufHandle(wsbmKBuf(ps_mem->bufs_mb_ctrl_in_params.drm_buf));
+#ifndef MIXVBP_KK_BLOBS
         *(cmdbuf->cmd_idx)++ =  wsbmKBufHandle(wsbmKBuf(ps_mem->bufs_first_pass_out_params.drm_buf));
         *(cmdbuf->cmd_idx)++ =  wsbmKBufHandle(wsbmKBuf(ps_mem->bufs_first_pass_out_best_multipass_param.drm_buf));
+#endif
     }
 
     if (cmd_id == MTX_CMDID_SETUP_INTERFACE) {
