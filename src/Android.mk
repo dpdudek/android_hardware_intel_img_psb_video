@@ -130,13 +130,15 @@ LOCAL_SRC_FILES += \
     vsp_cmdbuf.c \
     vsp_compose.c
 
-LOCAL_CFLAGS += \
-    -DPSBVIDEO_VPP_TILING
 
 LOCAL_C_INCLUDES += \
     $(TARGET_OUT_HEADERS)/libmedia_utils_vpp
 
 LOCAL_SHARED_LIBRARIES += libvpp_setting
+
+LOCAL_CFLAGS += \
+    -DPSBVIDEO_MRFL_VPP_SETTING \
+    -DPSBVIDEO_VPP_TILING
 endif
 
 ifeq ($(TARGET_BOARD_PLATFORM),merrifield)

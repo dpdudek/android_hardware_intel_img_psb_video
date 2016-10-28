@@ -38,6 +38,7 @@
 #include "psb_drv_debug.h"
 #include "vc1_defs.h"
 #include "pnw_rotate.h"
+#include "psb_surface_attrib.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>

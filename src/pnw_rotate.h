@@ -87,6 +87,11 @@ VAStatus psb_CreateRotateSurface(
     int msvdx_rotate
 );
 
+VAStatus psb_DestroyRotateBuffer(
+    object_context_p obj_context,
+    object_surface_p obj_surface
+);
+
 int psb__dump_NV12_buffers(
     psb_surface_p psb_surface,
     short srcx,
