@@ -32,6 +32,9 @@
 #include "vsp_cmdbuf.h"
 #include "psb_drv_debug.h"
 #include "vsp_compose.h"
+#ifdef PSBVIDEO_MRFL_VPP_ROTATE
+#include "pnw_rotate.h"
+#endif
 
 #include <strings.h>
 
