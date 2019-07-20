@@ -41,8 +41,8 @@ LOCAL_CLANG_CFLAGS += \
 
 LOCAL_CFLAGS := \
     -DLINUX -DANDROID -g -Wall -Wno-unused \
-    -DPSBVIDEO_LOG_ENABLE -DPSBVIDEO_VXD392 \
-    -DPSBVIDEO_MSVDX_DEC_TILING -DPSBVIDEO_MSVDX_EC
+    -DPSBVIDEO_LOG_ENABLE \
+    -DPSBVIDEO_MSVDX_DEC_TILING
 
 LOCAL_C_INCLUDES := \
     $(call include-path-for, libhardware)/hardware \
@@ -57,9 +57,9 @@ LOCAL_C_INCLUDES := \
 
 LOCAL_SHARED_LIBRARIES += libdl libdrm libwsbm libcutils \
     libutils libbinder libhardware liblog libsync libnativewindow
-
+    
 LOCAL_HEADER_LIBRARIES := \
-    libsystem_headers
+    libsystem_headers    
 
 LOCAL_SRC_FILES := \
     object_heap.c \
@@ -84,9 +84,7 @@ LOCAL_SRC_FILES := \
     pnw_VC1.c \
     pnw_rotate.c \
     tng_vld_dec.c \
-    tng_yuv_processor.c \
-    tng_VP8.c \
-    tng_jpegdec.c
+    tng_yuv_processor.c
 
 ifneq ($(filter $(TARGET_BOARD_PLATFORM),merrifield moorefield morganfield),)
 LOCAL_SRC_FILES += \
@@ -110,7 +108,15 @@ LOCAL_SRC_FILES += \
     tng_jpegES.c \
     tng_slotorder.c \
     tng_hostair.c \
-    tng_trace.c
+    tng_trace.c \
+    tng_VP8.c \
+    tng_jpegdec.c
+
+LOCAL_CFLAGS += \
+    -DPSBVIDEO_MRFL_VPP \
+    -DPSBVIDEO_MRFL \
+    -DSLICE_HEADER_PARSING \
+    -DPSBVIDEO_VXD392 -DPSBVIDEO_MSVDX_EC
 
 ifeq ($(TARGET_HAS_ISV),true)
 LOCAL_SRC_FILES += \
@@ -120,7 +126,6 @@ LOCAL_SRC_FILES += \
     vsp_compose.c
 
 LOCAL_CFLAGS += \
-    -DPSBVIDEO_MRFL_VPP \
     -DPSBVIDEO_VPP_TILING
 endif
 
@@ -130,28 +135,14 @@ LOCAL_SRC_FILES += \
     vsp_vp8.c \
     vsp_cmdbuf.c \
     vsp_compose.c
-endif
 
-ifeq ($(TARGET_HAS_VPP),true)
+LOCAL_CFLAGS += \
+    -DPSBVIDEO_VPP_TILING
+
 LOCAL_C_INCLUDES += \
     $(TARGET_OUT_HEADERS)/libmedia_utils_vpp
-endif
 
-
-ifeq ($(TARGET_HAS_VPP),true)
 LOCAL_SHARED_LIBRARIES += libvpp_setting
-LOCAL_CFLAGS += DPSBVIDEO_MRFL_VPP_SETTING
-endif
-
-ifeq ($(TARGET_HAS_VPP),true)
-LOCAL_CFLAGS += \
-    -DPSBVIDEO_MRFL_VPP -DPSBVIDEO_MRFL \
-    -DPSBVIDEO_VPP_TILING -DSLICE_HEADER_PARSING
-else
-LOCAL_CFLAGS += \
-    -DPSBVIDEO_MRFL_VPP \
-    -DPSBVIDEO_MRFL \
-    -DSLICE_HEADER_PARSING
 endif
 
 ifeq ($(TARGET_BOARD_PLATFORM),merrifield)
@@ -161,9 +152,30 @@ endif
 endif
 
 else
+
+ifneq ($(filter $(TARGET_BOARD_PLATFORM),clovertrail),)
+LOCAL_SRC_FILES += \
+    pnw_H263ES.c \
+    pnw_H264ES.c \
+    pnw_MPEG4ES.c \
+    pnw_cmdbuf.c \
+    pnw_hostcode.c \
+    pnw_hostheader.c \
+    pnw_hostjpeg.c \
+    pnw_jpeg.c \
+    tng_ved_scaling.c
+
 LOCAL_CFLAGS += \
-    -DPSBVIDEO_VXD392 -DBAYTRAIL \
-    -DPSBVIDEO_MSVDX_DEC_TILING -DPSBVIDEO_MSVDX_EC
+    -DPSBVIDEO_MFLD -DCLOVERTRAIL
+
+else
+LOCAL_SRC_FILES += \
+    tng_VP8.c \
+    tng_jpegdec.c
+
+LOCAL_CFLAGS += \
+    -DPSBVIDEO_VXD392 -DPSBVIDEO_MSVDX_EC -DBAYTRAIL
+endif
 endif
 
 ifeq ($(TARGET_HAS_MULTIPLE_DISPLAY),true)

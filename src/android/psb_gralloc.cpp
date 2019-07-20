@@ -194,8 +194,16 @@ int gralloc_init(void)
 int gralloc_getdisplaystatus(buffer_handle_t handle,  int* status)
 {
     int err;
+#ifdef ASUS_ZENFONE2_LP_BLOBS
+    int (*get_display_status)(gralloc_module_t*, buffer_handle_t, int*);
 
-#ifdef BAYTRAIL
+    get_display_status = (int (*)(gralloc_module_t*, buffer_handle_t, int*))(mAllocMod->reserved_proc[0]);
+    if (get_display_status == NULL) {
+        ALOGE("can't get gralloc_getdisplaystatus(...) \n");
+        return -1;
+    }
+    err = (*get_display_status)(mAllocMod, handle, status);
+#elif defined(BAYTRAIL)
     *status = mGralloc->perform(mGralloc, INTEL_UFO_GRALLOC_MODULE_PERFORM_GET_BO_STATUS, handle);
     err = 0;
 #else

@@ -935,7 +935,9 @@ VAStatus psb_CreateSurfaces2(
         buffer_stride = psb_surface->stride;
         /* by default, surface fourcc is NV12 */
         psb_surface->extra_info[4] = fourcc;
+#ifndef ASUS_ZENFONE2_LP_BLOBS
         psb_surface->extra_info[8] = fourcc;
+#endif
         obj_surface->psb_surface = psb_surface;
     }
 
@@ -3530,7 +3532,9 @@ EXPORT VAStatus __vaDriverInit_0_31(VADriverContextP ctx)
         driver_data->profile2Format[VAProfileH264ConstrainedBaseline][VAEntrypointVLD] = &pnw_H264_vtable;
 
         driver_data->vpp_profile = &tng_yuv_processor_vtable;
+#ifndef CLOVERTRAIL
         driver_data->ved_vpp = 1;
+#endif
     }
 #endif
 
